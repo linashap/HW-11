@@ -1,0 +1,120 @@
+''' подтип спортивной машины который увел скорость быстрее и тормозит тоже быстрее
+Создать тип грузовой, у которой ограничение скорости 60км. 
+Если пытается увеличить, должен отвечать ('не рискуйте жизнью')
+Электрокар в котором добавляется метод зарядка и уровень заряда, 
+если заряжка меньше 50%, ограничить скорость до 40км, метод зарядка заряжает до 100%'''
+
+class Car():
+    def __init__(self,brand,model,year,speed=0) -> None:
+        self._brand=brand
+        self._model=model
+        self._year=year
+        self._speed=speed
+    @property
+    def speed_up(self):
+        self._speed+=5
+        return(self._speed)
+    @property
+    def speed_decrice(self):
+        self._speed-=5
+        return(self._speed)
+    @property
+    def stop(self):
+        self._speed=0
+        return(self._speed)
+    @property
+    def turn_around(self):
+        self._speed=(-(self._speed))
+        return(self._speed)
+    @property
+    def get_speed(self):
+        return (print(f"Ваша скорость: {self._speed}"))
+    @property
+    def get_info(self):
+        return (print( self._brand,self._model,self._year))
+    @get_speed.setter
+    def get_speed(self,speed):
+        self._speed=speed
+        return(self._speed)
+        
+class Sport_car(Car):
+    def __init__(self, brand, model, year, speed=0) -> None:
+        super().__init__(brand, model, year, speed=speed)
+    @property
+    def speed_up(self):
+        self._speed+=50
+        return(self._speed)
+    @property
+    def speed_decrice(self):
+        self._speed-=40
+        return(self._speed)
+
+class Truck(Car):
+    def __init__(self, brand, model, year, speed=0) -> None:
+        super().__init__(brand, model, year, speed=speed)
+        if self._speed>=60:
+            print('ваша изначальная скорость больше допустимой,она будет снижена')
+            while self._speed>=60:
+                self._speed-=1
+    @property
+    def speed_up(self):
+        self._speed+=5
+        if self._speed>=60:
+            self._speed-=5
+            print('не рискуйте жизнью')
+        return(self._speed)
+
+class Electro_car(Car):
+    def __init__(self, brand, model, year, speed=0,chargelevel=0) -> None:
+        super().__init__(brand, model, year, speed=speed)
+        self._chargelevel=chargelevel
+        if self._chargelevel<50:
+            self._speed=40
+            print("ваша скорость только 40,изначальный уровень заряда слишком низкий,зарядите автомобиль")
+    @property
+    def charge_level(self):
+        (print(f'ваш уровень заряда:{self._chargelevel}%'))
+        if self._chargelevel<50:
+            self._speed=40
+            print("ваша скорость уменьшена до 40,зарядите автомобиль")
+    @charge_level.setter
+    def charge_level(self,chargelevel):
+        self._chargelevel=chargelevel
+        return( self._chargelevel)
+    @property
+    def charge_up(self):
+        self._chargelevel=100
+        print("ваш автомобиль заряжен")
+        return(self._chargelevel)
+    @property
+    def speed_up(self):
+        if self._chargelevel>50:
+           self._speed+=5
+        else:
+            print("ваша максимум скорости 40,зарядите автомобиль")
+        return(self._speed)
+
+def main():
+    car1=Electro_car("f1","f",2014,60,40)
+    car1.speed_up
+    car1.charge_up
+    car1.charge_level
+    car1.speed_up
+    car1.get_speed
+    #-----------------
+    car2=Truck("b2",'b',2014,70)
+    car2.get_speed
+    car2.speed_up
+    car2.get_speed
+    #------------------------
+    car3=Sport_car("d1","d",2017,50)
+    car3.get_speed
+    car3.speed_up
+    car3.get_speed
+    car3.speed_decrice
+    car3.get_speed
+
+
+
+if __name__=="__main__":
+    main()
